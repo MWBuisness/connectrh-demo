@@ -4,17 +4,30 @@ import Sidebar from '@/components/layout/Sidebar'
 import type { UserProfile } from '@/lib/types'
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/auth/login')
+  let profile = null
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('user_id', user.id)
-    .single()
+  try {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    if (!user) {
+      redirect('/auth/login')
+    }
 
-  if (!profile) redirect('/auth/login')
+    const { data } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('user_id', user.id)
+      .single()
+
+    profile = data
+  } catch (error) {
+    redirect('/auth/login')
+  }
+
+  if (!profile) {
+    redirect('/auth/login')
+  }
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
