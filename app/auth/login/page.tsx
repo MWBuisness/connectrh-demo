@@ -11,20 +11,18 @@ export default function LoginPage() {
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
-    setLoading(true)
-    setError('')
+  setLoading(true)
+  setError('')
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+  const { error } = await supabase.auth.signInWithPassword({ email, password })
 
-    if (error) {
-      setError('Email ou mot de passe incorrect : ' + error.message)
-      setLoading(false)
-    } else {
-  await new Promise(r => setTimeout(r, 500))
-  window.location.href = 'https://connectrh-demo.vercel.app/dashboard'
-}
+  if (error) {
+    setError('Email ou mot de passe incorrect : ' + error.message)
+    setLoading(false)
+  } else {
+    window.location.href = '/dashboard'
   }
-
+}
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
