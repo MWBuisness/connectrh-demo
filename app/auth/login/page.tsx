@@ -20,8 +20,9 @@ export default function LoginPage() {
       setError('Email ou mot de passe incorrect : ' + error.message)
       setLoading(false)
     } else {
-      window.location.href = 'https://connectrh-demo.vercel.app/dashboard'
-    }
+  await new Promise(r => setTimeout(r, 500))
+  window.location.href = 'https://connectrh-demo.vercel.app/dashboard'
+}
   }
 
   return (
