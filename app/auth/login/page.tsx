@@ -18,7 +18,7 @@ export default function LoginPage() {
       setError('Email ou mot de passe incorrect')
       setLoading(false)
     } else {
-      window.location.href = '/dashboard'
+      window.location.replace('https://connectrh-demo.vercel.app/dashboard')
     }
   }
 
