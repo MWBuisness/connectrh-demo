@@ -13,12 +13,14 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
+
     const { error } = await supabase.auth.signInWithPassword({ email, password })
+
     if (error) {
-      setError('Email ou mot de passe incorrect')
+      setError('Email ou mot de passe incorrect : ' + error.message)
       setLoading(false)
     } else {
-      window.location.replace('https://connectrh-demo.vercel.app/dashboard')
+      window.location.href = 'https://connectrh-demo.vercel.app/dashboard'
     }
   }
 
@@ -36,7 +38,6 @@ export default function LoginPage() {
           </div>
           <p className="text-sm text-gray-500">Connecté à SILAE · Votre espace RH sécurisé</p>
         </div>
-
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
           <h1 className="text-xl font-semibold text-gray-900 mb-6">Connexion</h1>
           <form onSubmit={handleLogin} className="space-y-4">
@@ -57,7 +58,7 @@ export default function LoginPage() {
             )}
             <button type="submit" disabled={loading}
               className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-medium py-2.5 rounded-lg text-sm transition">
-              {loading ? 'Connexion…' : 'Se connecter'}
+              {loading ? 'Connexion...' : 'Se connecter'}
             </button>
           </form>
           <div className="mt-6 pt-6 border-t border-gray-100">
