@@ -1,25 +1,26 @@
 import Sidebar from '@/components/layout/Sidebar'
 import type { UserProfile } from '@/lib/types'
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
   
   const { data: { session } } = await supabase.auth.getSession()
   
-  if (!session) {
-    redirect('/auth/login')
-  }
-
-  const { data: profile } = await supabase
+  // Pour la démo : si pas de session, afficher quand même le layout
+  const profile = session ? (await supabase
     .from('profiles')
     .select('*')
     .eq('user_id', session.user.id)
-    .single()
+    .single()).data : null
 
   if (!profile) {
-    redirect('/auth/login')
+    // Redirection côté client uniquement
+    return (
+      <html><body>
+        <script dangerouslySetInnerHTML={{__html: `window.location.href='/auth/login'`}} />
+      </body></html>
+    )
   }
 
   return (
